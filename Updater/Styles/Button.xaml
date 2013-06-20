@@ -1,0 +1,187 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="{x:Type Button}">
+
+        <Style.Resources>
+            <!--
+            <Color x:Key="DisabledBackground">#4c4c4c</Color>
+            <Color x:Key="NormalBackground">#538ce1</Color>
+            <Color x:Key="HoverBackground">#6ea8ff</Color>
+            -->
+
+            <Color x:Key="DisabledBackground">#4c4c4c</Color>
+            <Color x:Key="NormalBackground">#960a0a</Color>
+            <Color x:Key="HoverBackground">#de1111</Color>
+
+            <Storyboard x:Key="MouseOverAnimation">
+                <ColorAnimation Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color" To="{StaticResource HoverBackground}" Duration="0:0:0.3" />
+                <ColorAnimation Storyboard.TargetName="UnderlayFillBrush" Storyboard.TargetProperty="Color" To="{StaticResource HoverBackground}" Duration="0:0:0.3" />
+            </Storyboard>
+            <Storyboard x:Key="MouseOutAnimation" FillBehavior="Stop">
+                <ColorAnimation Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color" To="{StaticResource NormalBackground}" Duration="0:0:0.3" />
+                <ColorAnimation Storyboard.TargetName="UnderlayFillBrush" Storyboard.TargetProperty="Color" To="{StaticResource NormalBackground}" Duration="0:0:0.3" />
+            </Storyboard>
+            <Storyboard x:Key="MouseDownAnimation">
+                <DoubleAnimation Storyboard.TargetName="OverlayGradient" Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.1" />
+            </Storyboard>
+            <Storyboard x:Key="MouseUpAnimation" Storyboard.TargetProperty="Background" FillBehavior="Stop">
+                <DoubleAnimation Storyboard.TargetName="OverlayGradient" Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:0.1" />
+            </Storyboard>
+            <Storyboard x:Key="DisabledAnimation">
+                <ColorAnimation Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color" To="{StaticResource DisabledBackground}" Duration="0:0:0.3" />
+                <ColorAnimation Storyboard.TargetName="UnderlayFillBrush" Storyboard.TargetProperty="Color" To="{StaticResource DisabledBackground}" Duration="0:0:0.3" />
+                <DoubleAnimation Storyboard.TargetName="Underlay" Storyboard.TargetProperty="Opacity" To="0.4" Duration="0:0:0.3" />
+            </Storyboard>
+            <Storyboard x:Key="EnabledAnimation">
+                <ColorAnimation Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color" To="{StaticResource NormalBackground}" Duration="0:0:0.3" />
+                <ColorAnimation Storyboard.TargetName="UnderlayFillBrush" Storyboard.TargetProperty="Color" To="{StaticResource NormalBackground}" Duration="0:0:0.3" />
+                <DoubleAnimation Storyboard.TargetName="Underlay" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.3" />
+            </Storyboard>
+
+        </Style.Resources>
+
+        <Setter Property="Template">
+            <Setter.Value>
+
+                <ControlTemplate TargetType="Button">
+
+                    <!--
+                    <ControlTemplate.Resources>
+                        <Storyboard x:Key="MouseOverAnimation">
+                            <ColorAnimation Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color" To="{DynamicResource HoverBackground}" Duration="0:0:0.3" />
+                            <DoubleAnimation Storyboard.TargetName="Underlay" Storyboard.TargetProperty="Opacity" To="0.7" Duration="0:0:0.3" />
+                        </Storyboard>
+                        <Storyboard x:Key="MouseOutAnimation" FillBehavior="Stop">
+                            <ColorAnimation Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color" To="{DynamicResource NormalBackground}" Duration="0:0:0.3" />
+                            <DoubleAnimation Storyboard.TargetName="Underlay" Storyboard.TargetProperty="Opacity" To="0.2" Duration="0:0:0.3" />
+                        </Storyboard>
+                        <Storyboard x:Key="MouseDownAnimation">
+                            <DoubleAnimation Storyboard.TargetName="OverlayGradient" Storyboard.TargetProperty="Opacity" To="0.45" Duration="0:0:0.1" />
+                        </Storyboard>
+                        <Storyboard x:Key="MouseUpAnimation" Storyboard.TargetProperty="Background" FillBehavior="Stop">
+                            <DoubleAnimation Storyboard.TargetName="OverlayGradient" Storyboard.TargetProperty="Opacity" To="0.5" Duration="0:0:0.1" />
+                        </Storyboard>
+                        <Storyboard x:Key="DisabledAnimation">
+                            <ColorAnimation Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color" To="{DynamicResource DisabledBackground}" Duration="0:0:0.3" />
+                            <ColorAnimation Storyboard.TargetName="UnderlayFillBrush" Storyboard.TargetProperty="Color" To="{DynamicResource DisabledBackground}" Duration="0:0:0.3" />
+                        </Storyboard>
+                        <Storyboard x:Key="EnabledAnimation">
+                            <ColorAnimation Storyboard.TargetName="BackgroundBrush" Storyboard.TargetProperty="Color" To="{DynamicResource NormalBackground}" Duration="0:0:0.3" />
+                            <ColorAnimation Storyboard.TargetName="UnderlayFillBrush" Storyboard.TargetProperty="Color" To="{DynamicResource NormalBackground}" Duration="0:0:0.3" />
+                        </Storyboard>
+                    </ControlTemplate.Resources>
+                    -->
+
+                    <Grid>
+
+                        <!-- Button underlay glow
+                        
+                        -->
+                        <Rectangle x:Name="Underlay">
+                            <Rectangle.Fill>
+                                <SolidColorBrush x:Name="UnderlayFillBrush" Color="{DynamicResource NormalBackground}"/>
+                            </Rectangle.Fill>
+
+                            <Rectangle.Effect>
+                                <BlurEffect Radius="35" KernelType="Gaussian"/>
+                            </Rectangle.Effect>
+                        </Rectangle>
+
+                        <!-- Button base border with rounded corners
+                    
+                        Contains base background binded on button background property
+                        -->
+                        <Border x:Name="ButtonBackground" BorderThickness="1" CornerRadius="2">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="Black" Opacity="0.8"/>
+                            </Border.BorderBrush>
+
+                            <Border.Background>
+                                <SolidColorBrush x:Name="BackgroundBrush" Color="{DynamicResource NormalBackground}"/>
+                            </Border.Background>
+
+                            <!-- Button background overlay layer -->
+                            <Border CornerRadius="2">
+                                <Border.Background>
+                                    <LinearGradientBrush x:Name="OverlayGradient" Opacity="0.5" StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Offset="0" Color="White"/>
+                                        <GradientStop Offset="0.02" Color="White"/>
+                                        <GradientStop Offset="0.02" Color="Transparent"/>
+                                        <GradientStop Offset="0.85" Color="#000000" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+
+
+                                <Border BorderThickness="1" CornerRadius="2">
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="#b4b4b4" Opacity="0.2"/>
+                                    </Border.BorderBrush>
+
+                                    <!-- Inner text -->
+                                    <TextBlock Text="{TemplateBinding Content}"
+                                               FontSize="{TemplateBinding FontSize}"
+                                               Margin="15 0"
+                                               FontFamily="Segoe UI"
+                                               Foreground="White"
+                                               TextWrapping="Wrap"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               TextOptions.TextFormattingMode="Display"
+                                               RenderOptions.BitmapScalingMode="NearestNeighbor">
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect ShadowDepth="0" BlurRadius="6" Color="Black" RenderingBias="Quality"/>
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+
+                                </Border>
+
+                            </Border>
+
+                        </Border>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource DisabledAnimation}"/>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource EnabledAnimation}"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource MouseOverAnimation}"/>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource MouseOutAnimation}"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard Storyboard="{StaticResource MouseDownAnimation}"/>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard Storyboard="{StaticResource MouseUpAnimation}"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+
+
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+</ResourceDictionary>

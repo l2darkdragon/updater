@@ -1,0 +1,298 @@
+﻿<Window x:Class="Updater.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Updater.ViewModels"
+        xmlns:cv="clr-namespace:Updater.Converters"
+        xmlns:c="clr-namespace:Updater.Controls"
+        Title="MainWindow" Height="600" Width="850" Style="{StaticResource WindowStyle}">
+    
+    <Window.DataContext>
+         <local:WindowViewModel />
+    </Window.DataContext>
+    
+    <Window.Resources>
+
+        <!-- Title bar buttons -->
+        <ImageBrush x:Key="MinimizeBackground" ImageSource="../Resources/RootWindow_TitleBar_Minimize.png"/>
+        <ImageBrush x:Key="CloseBackground" ImageSource="../Resources/RootWindow_TitleBar_Close.png"/>
+        <ImageBrush x:Key="SettingsBackground" ImageSource="../Resources/RootWindow_TitleBar_Settings.png"/>
+        
+        
+        <!-- Converters -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
+        <cv:BooleanToColorConverter x:Key="BooleanToColor"/>
+        <cv:InverseBooleanConverter x:Key="InverseBoolean"/>
+
+        <!-- Triggers for button -->
+        <Style x:Key="SettingsDialog" TargetType="{x:Type Border}">
+            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard Duration="0:0:0.25">
+                                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Visible</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.25"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard Duration="0:0:0.25">
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.25"/>
+                                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0.25" Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Collapsed</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    
+    <DockPanel x:Name="RootWindow" Background="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+        <!-- Status Bar Area -->
+        <c:LinksList Height="32" DockPanel.Dock="Bottom"/>
+
+        <!-- Window content (including Title Bar area) -->
+        <Grid>
+            
+            <!-- Window Content Area
+            
+            -->
+            <DockPanel>
+               
+                <DockPanel.Background>
+                    <ImageBrush ImageSource="../Resources/MainContent_Background.jpg" Stretch="None"/>
+                </DockPanel.Background>
+
+                <!-- Progress Bar Area
+           
+                Located at the bottom, contains progress bar, progress label and start button.
+                -->
+                <DockPanel Width="820" Height="72" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+
+                    <Button FontSize="21" Command="{Binding PlayCommand}" Width="120" Height="44" Style="{StaticResource Start}" DockPanel.Dock="Right">PLAY</Button>
+
+                    <StackPanel Margin="0 0 13 0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                        <c:Spinner Margin="0 3 0 5" IsSpinning="{Binding IsBusy}">
+                            <TextBlock FontSize="13" Text="{Binding Label}"/>
+                        </c:Spinner>
+
+                        <ProgressBar Height="18" Opacity="0.9" Maximum="1000" Value="{Binding Progress}" IsIndeterminate="{Binding IsIndeterminate}" Foreground="{Binding IsErrorState, Converter={StaticResource BooleanToColor}}"/>
+                    </StackPanel>
+
+                </DockPanel>
+
+                
+                <!-- Promotional Text
+        
+                Located at the bottom right, contains link to promo news/article
+                -->
+                <c:PromoTextBlock Margin="30" DockPanel.Dock="Right" VerticalAlignment="Bottom"/>
+                
+                
+                <!-- Left Bar
+        
+                Located on the left side, contains links to last news and social networks links.
+                -->
+                <Border Width="250" Margin="16 0 0 0" DockPanel.Dock="Left" HorizontalAlignment="Left">
+
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0" Color="#80000000"/>
+                            <GradientStop Offset="0.85" Color="#80000000"/>
+                            <GradientStop Offset="1" Color="#00000000"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+
+                    <!-- Margin="16" -->
+                    <StackPanel Margin="6">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                <Setter Property="FontSize" Value="16"/>
+                                <Setter Property="Margin" Value="0 10"/>
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <TextBlock Margin="0 58 0 10" Text="News Feed"/>
+
+                        <c:NewsList Height="280" Margin="0 0 0 10"/>
+
+                        <TextBlock Text="Follow Us"/>
+
+                        <!-- Social Networks Links -->
+                        <StackPanel Height="48" Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                    <Setter Property="Margin" Value="10 0 0 0"/>
+                                </Style>
+                                <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                    <Setter Property="TextDecorations" Value="None"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <TextBlock Margin="0">
+                            <Hyperlink Command="{Binding NavigateCommand}" CommandParameter="https://www.facebook.com/DarkDragonLineageII">
+                                <Image Source="../Resources/social_facebook.png" Width="32" Height="32"/>
+                            </Hyperlink>
+                            </TextBlock>
+
+                            <TextBlock>
+                            <Hyperlink Command="{Binding NavigateCommand}" CommandParameter="https://plus.google.com/118134897177505366854/posts">
+                                <Image Source="../Resources/social_gplus.png" Width="32" Height="32"/>
+                            </Hyperlink>
+                            </TextBlock>
+
+                            <TextBlock>
+                            <Hyperlink Command="{Binding NavigateCommand}" CommandParameter="https://twitter.com/Dark_Dragon_L2J">
+                                <Image Source="../Resources/social_twitter.png" Width="32" Height="32"/>
+                            </Hyperlink>
+                            </TextBlock>
+
+                            <TextBlock>
+                            <Hyperlink Command="{Binding NavigateCommand}" CommandParameter="http://www.youtube.com/21012013">
+                                <Image Source="../Resources/social_youtube.png" Width="32" Height="32"/>
+                            </Hyperlink>
+                            </TextBlock>
+
+                        </StackPanel>
+                        <!-- End Social Networks Links -->
+
+                    </StackPanel>
+
+                </Border>
+                <!-- End Left Bar -->
+
+            </DockPanel>
+            <!-- End Main Content Area -->
+
+
+            <!-- Overlay Modal Dialog Area
+            
+            Contains all settings related controls. Settings view model is binded on this element!
+            -->
+            <Border Style="{StaticResource SettingsDialog}" DataContext="{Binding SettingsViewModel}">
+                
+                <Border.Background>
+                    <SolidColorBrush Color="Black" Opacity="0.4"/>
+                </Border.Background>
+
+                <Border BorderThickness="1" Margin="140 64">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="#333333"/>
+                    </Border.BorderBrush>
+
+                    <Border.Background>
+                        <SolidColorBrush Color="Black" Opacity="0.9"/>
+                    </Border.Background>
+
+                    <!-- Modal Dialog Content Area
+                    
+                    
+                    -->
+                    <DockPanel Margin="16">
+                        
+                        <StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
+
+                            <TextBlock Foreground="Gray" Margin="0 5">
+                            Please note that changing the server will lead to download of new client files for the selected server.<LineBreak/>
+                            If you encounter any problems with game client, use the <Run FontWeight="SemiBold">Check Files</Run> to perform client files check.
+                            </TextBlock>
+
+                            <StackPanel Height="48" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Command="{Binding CheckCommand}" FontSize="13" Margin="10 0" Height="28">CHECK FILES</Button>
+                                <Button Command="{Binding SaveSettingsCommand}" FontSize="13" Height="28" Style="{StaticResource Start}">SAVE</Button>
+                            </StackPanel> 
+
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock FontSize="16">Settings</TextBlock>
+
+                            
+                            <TextBlock Margin="0 20 0 10">What server do you want to play on?</TextBlock>
+
+                            <ListBox Margin="10 0" Style="{StaticResource RadioListBox}"
+                                     ItemsSource="{Binding Clients}" 
+                                     DisplayMemberPath="Name" 
+                                     SelectedValue="{Binding SelectedClient, Mode=TwoWay}"
+                                     SelectionMode="Single"/>
+
+                            <c:Spinner Margin="10 0" Visibility="{Binding IsFetching, Converter={StaticResource BooleanToVisibility}}">
+                                Fetching available game servers
+                            </c:Spinner>
+
+                            <TextBlock Foreground="Red" Margin="10 0" Visibility="{Binding IsErrorState, Converter={StaticResource BooleanToVisibility}}">
+                                An error occured while fetching clients list, please try to run the application later.
+                            </TextBlock>
+                            
+                            <!--
+                            <TextBlock Margin="0 20 0 10">Select client language</TextBlock>
+                            -->
+
+                        </StackPanel>
+
+
+                    </DockPanel>
+                    <!-- End Modal Dialog Content Area -->
+
+                </Border>
+            </Border>
+
+            <!-- Title Bar Area
+        
+            This area is located at the very top of the window and replaces the default operating system title bar.
+            It contains the title label and minimize and close buttons. Mouse down event is registered to enable
+            window drag & move.
+        
+            -->
+
+            <DockPanel x:Name="TitleBar" Background="Transparent" Height="48" VerticalAlignment="Top" MouseDown="TitleBar_MouseDown">
+                <DockPanel.Resources>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource TitleButton}">
+                        <Setter Property="Width" Value="28"/>
+                        <Setter Property="Height" Value="28"/>
+                        <Setter Property="Margin" Value="5 0"/>
+                    </Style>
+
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Setter Property="FontSize" Value="16"/>
+                        <Setter Property="Margin" Value="15 0"/>
+                    </Style>
+                </DockPanel.Resources>
+
+                
+                <Button Command="{Binding ShutdownCommand}" Background="{StaticResource CloseBackground}" Margin="5 0 10 0" DockPanel.Dock="Right"/>
+                <Button Command="{Binding MinimizeCommand}" Background="{StaticResource MinimizeBackground}" DockPanel.Dock="Right"/>
+                <Button Command="{Binding SettingsCommand}" Background="{StaticResource SettingsBackground}" DockPanel.Dock="Right"/>
+
+                <TextBlock>
+                    <TextBlock.Inlines>
+                        <Run FontWeight="SemiBold">DarkDragon</Run> Updater
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </DockPanel>
+
+        </Grid>
+
+    </DockPanel>
+
+</Window>

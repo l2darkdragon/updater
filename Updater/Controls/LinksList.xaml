@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="Updater.Controls.LinksList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Updater.ViewModels" 
+             mc:Ignorable="d" 
+             d:DesignHeight="32" d:DesignWidth="848">
+    
+    <UserControl.DataContext>
+        <local:LinksListViewModel/>
+    </UserControl.DataContext>
+
+    <!-- Status Bar Area -->
+    <DockPanel Height="32" Background="#141414">
+        <DockPanel.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="15 0 0 0"/>
+            </Style>
+
+            <Style TargetType="Hyperlink" BasedOn="{StaticResource {x:Type Hyperlink}}">
+                <Setter Property="Foreground" Value="#888888"/>
+            </Style>
+
+            <Style x:Key="Dark" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="Foreground" Value="#6d6d6d"/>
+            </Style>
+        </DockPanel.Resources>
+
+        <TextBlock>
+                <Hyperlink Click="Hyperlink_Click" NavigateUri="http://account.darkdragon.cz">Register</Hyperlink>
+        </TextBlock>
+
+        <TextBlock>
+                <Hyperlink Click="Hyperlink_Click" NavigateUri="http://www.darkdragon.cz">Website</Hyperlink>
+        </TextBlock>
+
+        <TextBlock>
+                <Hyperlink Click="Hyperlink_Click" NavigateUri="http://forum.darkdragon.cz">Forums</Hyperlink>
+        </TextBlock>
+
+        <TextBlock Foreground="#535353" Margin="15 0" HorizontalAlignment="Right" Style="{StaticResource Dark}" Text="{Binding Version}"/>
+    </DockPanel>
+</UserControl>
