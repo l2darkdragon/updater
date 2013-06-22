@@ -17,16 +17,16 @@ namespace Updater
         /// <summary>
         /// Check-in URL.
         /// 
-        /// http://update.darkdragon.cz/checkin
+        /// http://update.darkdragon.cz/checkin/
         /// </summary>
-        public static readonly Uri CHECKIN_URI = new Uri("http://localhost:12773/checkin");
+        public static readonly Uri CHECKIN_URI = new Uri("http://localhost:12773/checkin/");
         
         /// <summary>
         /// Clients URL.
         /// 
-        /// http://update.darkdragon.cz/clients
+        /// http://update.darkdragon.cz/clients/
         /// </summary>
-        public static readonly Uri CLIENTS_URI = new Uri("http://localhost:12773/clients");
+        public static readonly Uri CLIENTS_URI = new Uri("http://localhost:12773/clients/");
 
         /// <summary>
         /// Configuration file name
